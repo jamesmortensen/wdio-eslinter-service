@@ -1,6 +1,6 @@
 {
-  "name": "wdio-eslint-service",
-  "version": "0.1.0",
+  "name": "wdio-eslinter-service",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,18 @@
   },
   "keywords": [
     "wdio-plugin",
-    "wdio-service"
+    "wdio-service",
+    "wdio",
+    "webdriverio",
+    "eslint"
   ],
   "author": "James Mortensen",
   "license": "MIT",
+  "homepage": "https://github.com/jamesmortensen/wdio-eslinter-service/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesmortensen/wdio-eslinter-service.git"
+  },
   "devDependencies": {
     "@wdio/logger": "^7.5.3",
     "webdriverio": "^7.5.7"

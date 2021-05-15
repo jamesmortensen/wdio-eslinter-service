@@ -1,5 +1,5 @@
 const wdioLogger = require('@wdio/logger').default
-const logger = wdioLogger('wdio-eslint-service')
+const logger = wdioLogger('wdio-eslinter-service')
 
 class EslintLauncherService {
 
@@ -7,7 +7,7 @@ class EslintLauncherService {
         this.options = serviceOptions ? serviceOptions : {}
         if(!this.options.runnerType)
             this.options.runnerType = 'npm';
-        logger.warn(`initialize wdio-eslint-service using ${this.options.runnerType} runner.`)
+        logger.warn(`initialize wdio-eslinter-service using ${this.options.runnerType} runner.`)
     }
 
     onPrepare(config, capabilities) {

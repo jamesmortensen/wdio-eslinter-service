@@ -1,4 +1,4 @@
-# wdio-eslint-service
+# wdio-eslinter-service
 
 Have you ever run your e2e tests, only to find out 10, 15, or 30 minutes later that there was a missing/misspelled import, which didn't appear until the middle of the test run?  When this happens, the test runner reports these tests as broken.
 
@@ -9,10 +9,10 @@ It's oftentimes better to fail faster so we can fix problems sooner rather than 
 
 ## Installation
 
-Install the wdio-eslint-service:
+Install the wdio-eslinter-service:
 
 ```
-$ npm i wdio-eslint-service --save-dev 
+$ npm i wdio-eslinter-service --save-dev 
 ```
 
 If you don't already have eslint installed and configured, you'll need to install it and configure it in your project:
@@ -60,10 +60,10 @@ Inside your `package.json`, add this entry to your run scripts:
 **NOTE: Adding eslint to the package.json is required for the service to function.**
 
 
-Lastly, add the `eslint` service to the services array in `wdio.conf.js`:
+Lastly, add the `eslinter` service to the services array in `wdio.conf.js`:
 
 ```javascript
-    services: ['eslint']
+    services: ['eslinter']
 ```
 
 Run `npm run eslint` to verify and check for errors.
@@ -85,7 +85,7 @@ $ npx wdio --spec ./test/specs/example.e2e.js
 
 Execution of 1 spec files started at 2021-05-15T12:04:05.388Z
 
-2021-05-15T12:04:05.793Z WARN wdio-eslint-service: initialize wdio-eslint-service using npm runner.
+2021-05-15T12:04:05.793Z WARN wdio-eslinter-service: initialize wdio-eslint-service using npm runner.
 Deleted files and directories:
  /Users/jem/Dev/wdio-example/allure-results
 
@@ -94,6 +94,6 @@ Deleted files and directories:
 
 ✖ 1 problem (1 error, 0 warnings)
 
-2021-05-15T12:04:08.581Z ERROR wdio-eslint-service: SEVERE: Code contains eslint errors or eslint not installed.
+2021-05-15T12:04:08.581Z ERROR wdio-eslinter-service: SEVERE: Code contains eslint errors or eslint not installed.
 ```
 
