@@ -1,0 +1,19 @@
+{
+  "name": "wdio-eslint-service",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wdio-plugin",
+    "wdio-service"
+  ],
+  "author": "James Mortensen",
+  "license": "MIT",
+  "devDependencies": {
+    "@wdio/logger": "^7.5.3",
+    "webdriverio": "^7.5.7"
+  }
+}
