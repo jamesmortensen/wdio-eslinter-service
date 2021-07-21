@@ -4,7 +4,8 @@ const { spawn } = require('child_process');
 
 module.exports = function () {
     return new Promise((resolve, reject) => {
-        const eslint = spawn('npm', ['run', 'eslint', '--silent'], { stdio: "inherit" });
+        const npmCmd = process.platform.match('^win') !== null ? 'npm.cmd' : 'npm';
+        const eslint = spawn(npmCmd, ['run', 'eslint', '--silent'], { stdio: "inherit" });
 
         eslint.on('close', (code) => {
             if (code !== 0)
