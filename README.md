@@ -76,6 +76,13 @@ If you use `yarn` you can configure the `runnerType` service option:
     ]
 ```
 
+If you already have a linter script that you would like to reuse (instead of `eslint`), you can configure the `scriptName` service option:
+
+```javascript
+    services: [
+        ['eslinter', { scriptName: 'eslint:check' }]
+    ]
+```
 
 ## Using in WebdriverIO
 
