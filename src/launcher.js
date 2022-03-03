@@ -7,6 +7,8 @@ class EslintLauncherService {
         this.options = serviceOptions ? serviceOptions : {}
         if(!this.options.runnerType)
             this.options.runnerType = 'npm';
+        if(!this.options.scriptName)
+            this.options.scriptName = 'eslint';
         logger.warn(`initialize wdio-eslinter-service using ${this.options.runnerType} runner.`)
     }
 
@@ -14,7 +16,7 @@ class EslintLauncherService {
         return new Promise((resolve, reject) => {
             const { SevereServiceError } = require('webdriverio')
             const runEslint = require(`./eslint-${this.options.runnerType}-runner`)
-            return runEslint().then((code) => {
+            return runEslint(this.options.scriptName).then((code) => {
                 logger.info('eslint checks passed...')
                 resolve()
             }).catch((err) => {

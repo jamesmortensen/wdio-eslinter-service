@@ -1,11 +1,11 @@
-// eslint-npm-runner.js
+// eslint-yarn-runner.js
 
 const { spawn } = require('child_process');
 
 module.exports = function (scriptName) {
     return new Promise((resolve, reject) => {
-        const npmCmd = process.platform.match('^win') !== null ? 'npm.cmd' : 'npm';
-        const eslint = spawn(npmCmd, ['run', scriptName, '--silent'], { stdio: "inherit" });
+        const yarnCmd = process.platform.match('^win') !== null ? 'yarn.cmd' : 'yarn';
+        const eslint = spawn(yarnCmd, ['run', '--silent', scriptName], { stdio: "inherit" });
 
         eslint.on('close', (code) => {
             if (code !== 0)

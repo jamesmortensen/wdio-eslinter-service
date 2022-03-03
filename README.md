@@ -68,6 +68,21 @@ Lastly, add the `eslinter` service to the services array in `wdio.conf.js`:
 
 Run `npm run eslint` to verify and check for errors.
 
+If you use `yarn` you can configure the `runnerType` service option:
+
+```javascript
+    services: [
+        ['eslinter', { runnerType: 'yarn' }]
+    ]
+```
+
+If you already have a linter script that you would like to reuse (instead of `eslint`), you can configure the `scriptName` service option:
+
+```javascript
+    services: [
+        ['eslinter', { scriptName: 'eslint:check' }]
+    ]
+```
 
 ## Using in WebdriverIO
 
