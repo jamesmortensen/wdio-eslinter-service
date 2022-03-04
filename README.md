@@ -6,6 +6,7 @@ eslint is a great tool for catching different errors pre-runtime, and this servi
 
 It's oftentimes better to fail faster so we can fix problems sooner rather than later.
 
+If desired, you can also configure the service to run the eslinter in your project.
 
 ## Installation
 
@@ -21,13 +22,64 @@ If you don't already have eslint installed and configured, you'll need to instal
 $ npm i eslint eslint-plugin-import
 ```
 
-Put `.eslintrc.js` in the root of your Node.js project:
+### Check for missing or unresolved imports only
+
+If you don't have an `.eslintrc.js` configuration in your project, then wdio-eslinter-service can be configured to use a default one which just checks for missing imports before running the tests. This is handy so that you find out about incorrect imports sooner rather than later. To configure this, add the following eslinter configuration to your services array:
+
+```
+    services: ['chromedriver', [
+        'eslinter',
+        {
+            runnerType: 'unresolved',
+            includeProjectEslintrc: false
+        }
+    ]],
+```
+
+If you're using the [module-alias]() module, which lets you configure aliases to replace relative paths, you'll need to pass that into the eslinter configuration, if you don't already have an `eslintrc` config file in your project. Below is an example:
+
+```
+    services: ['chromedriver', [
+        'eslinter',
+        {
+            runnerType: 'unresolved',
+            includeProjectEslintrc: false,
+            eslintOverride: {
+                "settings": {
+                    "import/resolver": {
+                        "eslint-import-resolver-custom-alias": {
+                            "alias": {
+                                "@utils": "./utils",
+                                "@specs": "./test-sync/specs",
+                                "@pageobjects": "./test-sync/pageobjects",
+                                "@": "./"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]],
+```
+
+Start running your tests to see it in action. You may need to intentionally break one of your require/imports to see what it looks like when it catches an error.
+
+```
+$ npx wdio
+```
+
+NOTE: To also have the eslinter service use an existing eslintrc configuration in your project, set `includeProjectEslintrc` to true in the wdio.conf.js configuration services array.
+ 
+
+### If you already use eslint and have an existing eslintrc
+
+If it's not already there, put `.eslintrc.js` in the root of your Node.js project:
 
 ```
 // .eslintrc.js
 module.exports = {
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2022
     },
     "plugins": [
         "import"
@@ -57,7 +109,7 @@ Inside your `package.json`, add this entry to your run scripts:
 }
 ```
 
-**NOTE: Adding eslint to the package.json is required for the service to function.**
+**NOTE: Adding eslint to the package.json is required for the service to function when using the npm or yarn runners.**
 
 
 Lastly, add the `eslinter` service to the services array in `wdio.conf.js`:
