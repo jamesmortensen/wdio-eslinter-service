@@ -36,7 +36,7 @@ If you don't have an `.eslintrc.js` configuration in your project, then wdio-esl
     ]],
 ```
 
-If you're using the [module-alias]() module, which lets you configure aliases to replace relative paths, you'll need to pass that into the eslinter configuration, if you don't already have an `eslintrc` config file in your project. Below is an example:
+If you're using the [module-alias](https://www.npmjs.com/package/module-alias) module, which lets you configure aliases to replace relative paths, you'll need to pass that into the eslinter configuration, if you don't already have an `eslintrc` config file in your project. Below is an example:
 
 ```
     services: ['chromedriver', [
@@ -69,7 +69,7 @@ $ npx wdio
 ```
 
 NOTE: To also have the eslinter service use an existing eslintrc configuration in your project, set `includeProjectEslintrc` to true in the wdio.conf.js configuration services array.
- 
+
 
 ### If you already use eslint and have an existing eslintrc
 
