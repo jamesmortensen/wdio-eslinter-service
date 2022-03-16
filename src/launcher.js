@@ -25,10 +25,27 @@ class EslintLauncherService {
                 reject(err)
             })
         }).catch((err) => {
-            logger.error('SEVERE: Code contains eslint errors or eslint not installed. Exiting...')
+            const type = this.options.runnerType
+            if(customErrorHandlerExists(type))
+                handleErrorsWithErrorHandler(type, err)
+            else
+                logger.error('SEVERE: Code contains eslint errors or eslint not installed. Exiting...')
             process.exit(1)
         })
     }
+}
+
+const fs = require('fs')
+
+function customErrorHandlerExists(type) {
+    const eslintErrorHandlerFile = `eslint-${type}-error-handler.js`
+    return fs.existsSync(`node_modules/wdio-eslinter-service/src/${eslintErrorHandlerFile}`)
+}
+
+function handleErrorsWithErrorHandler(type, err) {
+    const eslintErrorHandlerFile = `eslint-${type}-error-handler.js`
+    const eslintErrorHandler = require(`./${eslintErrorHandlerFile}`)
+    eslintErrorHandler.handleError(err)
 }
 
 module.exports = EslintLauncherService;
