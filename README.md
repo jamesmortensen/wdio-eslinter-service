@@ -6,6 +6,7 @@ eslint is a great tool for catching different errors pre-runtime, and this servi
 
 It's oftentimes better to fail faster so we can fix problems sooner rather than later.
 
+The recommended configuration is to use the unresolved runner to just check missing imports, but if desired, you can also configure the service to run the eslinter in your project using the npm or yarn runner, or by passing in a flag that tells the system to use your .eslintrc configuration as well.
 
 ## Installation
 
@@ -15,19 +16,111 @@ Install the wdio-eslinter-service:
 $ npm i wdio-eslinter-service --save-dev 
 ```
 
-If you don't already have eslint installed and configured, you'll need to install it and configure it in your project:
+
+### Quick Start - Check for missing or unresolved imports only
+
+By default, this minimal configuration, the "unresolved" runner, checks for unresolved require imports and throws an error if unresolved imports are found. The service then stops execution. You can customize .eslintrc.js to perform more checks using the "npm" or "yarn" runners, if desired. See [eslint](https://www.npmjs.com/package/eslint) for more details.
+
+If you don't have an `.eslintrc.js` configuration in your project, then wdio-eslinter-service can be configured to use a default one which just checks for missing imports before running the tests. This is handy so that you find out about incorrect imports sooner rather than later. To configure this, add the following eslinter configuration to your services array (assuming you already are using the chromedriver service; otherwise, leave that part out):
+
+**wdio.conf.js:**
+```
+    services: ['chromedriver', [
+        'eslinter',
+        {
+            runnerType: 'unresolved'
+        }
+    ]],
+```
+
+At this point, start running the tests, and if there is a missing or incorrect import, WebdriverIO will log it and immediately terminate the test run:
+
+```
+$ npx wdio
+```
+
+
+#### Optional - if using module-alias
+
+If you're using the [module-alias](https://www.npmjs.com/package/module-alias) module, which lets you configure aliases to replace relative paths, you'll need to pass that into the eslinter configuration using the eslint-import-resolver-custom-alias plugin. Below is an example:
+
+```
+    services: ['chromedriver', [
+        'eslinter',
+        {
+            runnerType: 'unresolved',
+            eslintOverride: {
+                "settings": {
+                    "import/resolver": {
+                        "eslint-import-resolver-custom-alias": {
+                            "alias": {
+                                "@utils": "./utils",
+                                "@specs": "./test-sync/specs",
+                                "@pageobjects": "./test-sync/pageobjects",
+                                "@": "./"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]],
+```
+
+Install the plugin in your project:
+
+```
+$ npm i eslint-import-resolver-custom-alias
+```
+
+Run the tests and verify the system will find incorrect imports that use module aliases:
+
+```
+$ npx wdio
+```
+
+#### Experimental - Use along with an existing eslintrc configuration in your project
+
+To also have the eslinter service use an existing eslintrc configuration in your project, set `includeProjectEslintrc` to true in the wdio.conf.js configuration services array.
+
+I've experienced problems with conflicting plugins. If your project eslint setup is also looking for unresolved imports, then this may not work and may require adjustments to your .eslintrc.js. This is not recommended at this time.
+
+
+### Advanced Alternatives - Using the npm and yarn runners
+
+The npm and yarn runners help give you additional control over running an existing eslinter setup in your project. With this configuration, you can define extra commands to run in the run-scripts section in your package.json:
+
+Inside your `package.json`, add this entry to your run scripts:
+
+```json
+{
+    "scripts": {
+        "eslint": "eslint ."
+    }
+}
+```
+
+**NOTE: Adding eslint to the package.json is required for the service to function when using the npm or yarn runners.**
+
+If you don't already have eslint installed and configured, you'll need to install it and configure it in your project, as well as any plugins you're using, such as eslint-plugin-import:
 
 ```
 $ npm i eslint eslint-plugin-import
 ```
 
-Put `.eslintrc.js` in the root of your Node.js project:
+If you're using eslint-import-resolver-custom-alias plugin to map module aliases to their real paths, then you'll need to install it as well:
+
+```
+$ npm i eslint-import-resolver-custom-alias
+```
+
+You'll also need to create an `.eslintrc.js` file, if you don't already have one of the eslintrc configuration files in your project. Here is a basic setup to just look for unresolved imports, and you can expand this configuration to validate other code quality checks before running tests:
 
 ```
 // .eslintrc.js
 module.exports = {
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2022
     },
     "plugins": [
         "import"
@@ -44,21 +137,6 @@ module.exports = {
     }
 }
 ```
-
-By default, this minimal configuration checks for unresolved require imports and throws an error if unresolved imports are found. The service then stops execution. You can customize .eslintrc.js to perform more checks, if desired. See [eslint](https://www.npmjs.com/package/eslint) for more details.
-
-Inside your `package.json`, add this entry to your run scripts:
-
-```json
-{
-    "scripts": {
-        "eslint": "eslint ."
-    }
-}
-```
-
-**NOTE: Adding eslint to the package.json is required for the service to function.**
-
 
 Lastly, add the `eslinter` service to the services array in `wdio.conf.js`:
 
